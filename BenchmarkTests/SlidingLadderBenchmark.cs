@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using System;
 using System.Runtime.CompilerServices;
 
 namespace BenchmarkTests;
@@ -99,4 +100,58 @@ public class SlidingLadderBenchmark
         => n > 1
         ? PrivateRecurrsiveAggressiveInlining(n - 1) + PrivateRecurrsiveAggressiveInlining(n - 2)
         : 1;
+
+    /// <summary>
+    /// (1 + sqrt(5))/2
+    /// </summary>
+    private const double φ = 1.6180339887498949D;
+
+    /// <summary>
+    /// (1 - sqrt(5))/2
+    /// </summary>
+    private const double ψ = -0.6180339887498949D;
+
+    /// <summary>
+    /// 1 / sqrt(5)
+    /// </summary>
+    private const double J = 0.44721359549995793D;
+
+    [Benchmark]
+    public double AnalyticMathPow()
+        => (Math.Pow(φ, N + 1) - Math.Pow(ψ, N + 1)) * J;
+
+    [Benchmark]
+    public double AnalyticLoopPower()
+    {
+        var u = 1D;
+        var v = 1D;
+        for (int i = 0; i <= N; i++)
+        {
+            u *= φ;
+            v *= ψ;
+        }
+        return (u - v) * J;
+    }
+
+    [Benchmark]
+    public double AnalyticSquarePower()
+    {
+        var u = 1D;
+        var v = 1D;
+        var phiN = φ;
+        var psiN = ψ;
+        var p = N + 1;
+        while (p > 0)
+        {
+            if ((p & 1) == 1)
+            {
+                u *= phiN;
+                v *= psiN;
+            }
+            phiN *= phiN;
+            psiN *= psiN;
+            p >>= 1;
+        }
+        return (u - v) * J;
+    }
 }
