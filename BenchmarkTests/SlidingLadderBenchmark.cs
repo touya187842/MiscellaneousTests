@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
+using System.Runtime.CompilerServices;
 
 namespace BenchmarkTests;
 
@@ -81,4 +82,21 @@ public class SlidingLadderBenchmark
         }
         return b;
     }
+
+    [Benchmark]
+    public int Recurrsive() => PrivateRecurrsive(N);
+
+    private static int PrivateRecurrsive(int n)
+        => n > 1
+        ? PrivateRecurrsive(n - 1) + PrivateRecurrsive(n - 2)
+        : 1;
+
+    [Benchmark]
+    public int RecurrsiveAggressiveInlining() => PrivateRecurrsiveAggressiveInlining(N);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static int PrivateRecurrsiveAggressiveInlining(int n)
+        => n > 1
+        ? PrivateRecurrsiveAggressiveInlining(n - 1) + PrivateRecurrsiveAggressiveInlining(n - 2)
+        : 1;
 }
