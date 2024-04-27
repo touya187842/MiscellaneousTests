@@ -50,6 +50,10 @@ public class SwitchSlidingLadder : ISlidingLadder
             43 => 701408733,
             44 => 1134903170,
             45 => 1836311903,
+#if NET8_0_OR_GREATER
             _ => throw new System.Diagnostics.UnreachableException()
+#else
+            _ => throw new System.Exception()
+#endif
         };
 }

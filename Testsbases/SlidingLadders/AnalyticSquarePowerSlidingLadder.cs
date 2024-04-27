@@ -1,4 +1,6 @@
-﻿namespace Testsbases.SlidingLadders;
+﻿using System;
+
+namespace Testsbases.SlidingLadders;
 
 public sealed class AnalyticSquarePowerSlidingLadder : AnalyticSlidingLadder
 {
@@ -20,6 +22,6 @@ public sealed class AnalyticSquarePowerSlidingLadder : AnalyticSlidingLadder
             psiN *= psiN;
             p >>= 1;
         }
-        return (int)((u - v) * J);
+        return Convert.ToInt32((u - v) * J);
     }
 }
