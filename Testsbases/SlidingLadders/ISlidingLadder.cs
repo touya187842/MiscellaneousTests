@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-
-namespace Testsbases.SlidingLadders;
+﻿namespace Testsbases.SlidingLadders;
 
 public interface ISlidingLadder
 {
